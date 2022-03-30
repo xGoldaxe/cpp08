@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:27:43 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/30 16:53:30 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/03/30 21:20:42 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,22 @@
 
 /* COPLIEN */
 
-Span::Span( void ) : _n( 0 ), _size( 0 ), _tab( NULL )	{
+Span::Span( void ) : _n( 0 ),  _space( 0 ), _tab( std::vector<int>(0) )	{
 
     return ;
 }
 
-Span::Span( unsigned int n ) : _n( n ), _size( 0 ), _tab( new int[n] )	{
+Span::Span( unsigned int n ) : _n( n ), _space( n ), _tab( std::vector<int>(n) )	{
 
     return ;
 }
 
 Span::~Span( void ) {
 
-    delete[] _tab;
     return ;
 }
 
-Span::Span( Span const &src ) : _n( src.getN() ), _size( src.getSize() ),  _tab( NULL )	{
+Span::Span( Span const &src ) : _n( src.getN() ), _space( src.getSpace() ), _tab( std::vector<int>(0) )	{
 
     *this = src;
     
@@ -47,11 +46,10 @@ Span &	Span::operator=( Span const & rhs )	{
     if ( this != &rhs ) {
 
         this->_n = rhs.getN();
-        this->_size = rhs.getSize();
-        delete[] this->_tab;
-        this->_tab = new int[rhs.getN()];
-        for (unsigned int i = 0; i < rhs.getN(); i++)
-            this->_tab[i] = rhs.getTab()[i];
+        this->_space = rhs.getSpace();
+        std::vector<int>::iterator start = rhs.getTab().begin();
+        std::vector<int>::iterator end = rhs.getTab().end();
+        this->addRange( start, end );
     }
 
     return (*this);
@@ -64,24 +62,23 @@ unsigned int	Span::getN( void ) const	{
     return ( this->_n );
 }
 
-int *	Span::getTab( void ) const	{
+const std::vector<int> &	Span::getTab( void ) const	{
 
     return ( this->_tab );
 }
 
-unsigned int	Span::getSize( void ) const	{
+unsigned int	Span::getSpace( void ) const	{
 
-    return ( this->_size );
+    return ( this->_space );
 }
 
 /* others */
 
 void	Span::addNumber( int value )	{
 
-    if ( this->_size >= this->_n )
+    if ( this->_space <= 0 )
         throw ( Span::fullException() );
-    this->_tab[this->_size] = value;
-    this->_size += 1;
+    this->_tab[this->_n - this->_space] = value;
     return ;
 }
 
@@ -101,27 +98,37 @@ unsigned int    getDiff( int a, int b ) {
 
 unsigned int	Span::shortestSpan( void )	{
 
-    if ( this->_size < 2 )
+    if ( (this->_n - this->_space) < 2 )
         throw ( Span::tooSmallException() );
 
     unsigned int diff = std::numeric_limits<unsigned long>::max();
-    for (unsigned int i = 0; i < this->_size - 1; i++)
+    for (unsigned int i = 0; i < (this->_n - this->_space)- 1; i++)
     {
         unsigned int newDiff = getDiff( this->_tab[i], this->_tab[i + 1]);
         diff = std::min<unsigned int>( newDiff, diff );
     }
     
-    /* CODE HERE */
     return ( diff );
 }
 
 unsigned int	Span::longestSpan( void )	{
 
-    if ( this->_size < 2 )
+    if ( (this->_n - this->_space) < 2 )
         throw ( Span::tooSmallException() );
 
-    int min = *std::min_element( this->_tab, this->_tab + this->_size );
-    int max = *std::max_element( this->_tab, this->_tab + this->_size );
+    int min = *std::min_element( this->_tab.begin(), this->_tab.end() );
+    int max = *std::max_element( this->_tab.begin(), this->_tab.end() );
 
     return getDiff(min, max);
+}
+
+void	Span::addRange(
+    std::vector<int>::iterator start,
+    std::vector<int>::iterator end )
+{
+
+    if ( static_cast<unsigned int>(std::distance(start, end)) > this->_space )
+        throw ( Span::fullException() );
+    std::copy( start, end, this->_tab.begin() );
+    return ;
 }
