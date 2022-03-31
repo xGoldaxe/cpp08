@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:52:15 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/30 21:14:00 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:33:57 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ class Span
         Span &   operator=( Span const & rhs );
         /* end coplien */
         void	addNumber( int value );
-        void    addRange( std::vector<int>::iterator start, std::vector<int>::iterator end );
+        void    addRange( std::vector<int>::const_iterator start, std::vector<int>::const_iterator end );
         unsigned int    shortestSpan( void );
         unsigned int    longestSpan( void );
 

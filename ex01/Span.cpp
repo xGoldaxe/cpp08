@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:27:43 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/30 21:20:42 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/03/31 11:46:34 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ Span::~Span( void ) {
     return ;
 }
 
-Span::Span( Span const &src ) : _n( src.getN() ), _space( src.getSpace() ), _tab( std::vector<int>(0) )	{
+Span::Span( Span const &src ) : _n( src.getN() ), _space( src.getN() ), _tab( std::vector<int>(0) )	{
 
     *this = src;
     
@@ -46,9 +46,11 @@ Span &	Span::operator=( Span const & rhs )	{
     if ( this != &rhs ) {
 
         this->_n = rhs.getN();
-        this->_space = rhs.getSpace();
-        std::vector<int>::iterator start = rhs.getTab().begin();
-        std::vector<int>::iterator end = rhs.getTab().end();
+        //space set to max because add range will decrease it
+        this->_space = rhs.getN();
+        this->_tab = std::vector<int>(rhs.getN());
+        std::vector<int>::const_iterator start = rhs.getTab().begin();
+        std::vector<int>::const_iterator end = rhs.getTab().end();
         this->addRange( start, end );
     }
 
@@ -79,6 +81,7 @@ void	Span::addNumber( int value )	{
     if ( this->_space <= 0 )
         throw ( Span::fullException() );
     this->_tab[this->_n - this->_space] = value;
+    this->_space--;
     return ;
 }
 
@@ -123,12 +126,14 @@ unsigned int	Span::longestSpan( void )	{
 }
 
 void	Span::addRange(
-    std::vector<int>::iterator start,
-    std::vector<int>::iterator end )
+    std::vector<int>::const_iterator start,
+    std::vector<int>::const_iterator end )
 {
 
-    if ( static_cast<unsigned int>(std::distance(start, end)) > this->_space )
+    unsigned int distance = static_cast<unsigned int>(std::distance(start, end));
+    if (distance > this->_space )
         throw ( Span::fullException() );
+    this->_space -= distance;
     std::copy( start, end, this->_tab.begin() );
     return ;
 }
