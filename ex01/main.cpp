@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:44:45 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/31 11:47:00 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:21:00 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 #include <stdlib.h>
 #include <vector>
 #include <time.h> 
+#include <list>
 #include <iterator>
 
 int main()
@@ -73,12 +74,12 @@ int main()
 
     std::cout << "<-----------{generator}----------->" << std::endl;
     Span spore = Span(5);
-    std::vector<int> v(5);
-    v[0] = 10;
-    v[1] = 20;
-    v[2] = 30;
-    v[3] = 40;
-    v[4] = 60;
+    std::list<int> v;
+    v.push_back( 10 );
+    v.push_back( 20 );
+    v.push_back( 30 );
+    v.push_back( 40 );
+    v.push_back( 60 );
 
     spore.addRange( v.begin(), v.end() );
     //should print 10 and 50

@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:52:28 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/31 16:23:49 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:49:29 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,24 +22,16 @@ template < typename T >
 class MutantStack : public std::stack<T>
 {
 
-    private:
-
     public:
         /* coplien */
         MutantStack( void ) {
 
             std::cout << "Mutant created" << std::endl;
         };
-        MutantStack( MutantStack const &src ) {
-
-            (void)src;
-        };
         ~MutantStack( void ) {
 
             std::cout << "Mutant destroyed" << std::endl;
         };
-
-        MutantStack &   operator=( MutantStack const & rhs );
         /* end coplien */
 
         /* ITERATOR */
@@ -58,9 +50,10 @@ class MutantStack : public std::stack<T>
                 T* _from;
                 T* _to;
                 unsigned int _actual;
-                iterator( void ) {}
 
             public:
+                iterator( void ) {}
+
                 /* coplien */
                 iterator( T* from, T* to, unsigned int actual ) : _from( from ), _to( to ), _actual( actual ) {
                     std::cout << "Iterator created" << std::endl;
@@ -70,13 +63,12 @@ class MutantStack : public std::stack<T>
                     std::cout << "iterator copy constructor" << std::endl;
                 }
                 
-                iterator &operator=( iterator & rhs ) {
+                iterator &operator=( const iterator & rhs ) {
+
                     std::cout << "= overload" << std::endl;
-                    if (*this != rhs) {
-                        this->_from = rhs.getFrom();
-                        this->_to = rhs.getTo();
-                        this->_actual = rhs.getActual();
-                    }
+                    this->_from = rhs.getFrom();
+                    this->_to = rhs.getTo();
+                    this->_actual = rhs.getActual();
                     return (*this);
                 }
 
@@ -110,6 +102,16 @@ class MutantStack : public std::stack<T>
                 iterator  operator++(int) {
                     iterator retval( *this );
                     ++(*this);
+                    return ( retval );
+                }
+
+                iterator &  operator--() {
+                    this->_actual--;
+                    return ( *this );
+                }
+                iterator  operator--(int) {
+                    iterator retval( *this );
+                    --(*this);
                     return ( retval );
                 }
 

@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:52:15 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/31 11:33:57 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:22:10 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,11 @@ class Span
         unsigned int    _space;
         std::vector<int>  _tab;
 
+    protected:
+        unsigned int	getN( void ) const;
+        unsigned int	getSpace( void ) const;
+        const std::vector<int> &	getTab( void ) const;
+
     public:
         /* coplien */
         Span( void );
@@ -35,15 +40,9 @@ class Span
         Span &   operator=( Span const & rhs );
         /* end coplien */
         void	addNumber( int value );
-        void    addRange( std::vector<int>::const_iterator start, std::vector<int>::const_iterator end );
         unsigned int    shortestSpan( void );
         unsigned int    longestSpan( void );
-
-        unsigned int	getN( void ) const;
-        unsigned int	getSpace( void ) const;
-        const std::vector<int> &	getTab( void ) const;
         
-
         /* exceptions */
         class fullException : public std::exception	{
             public:
@@ -57,6 +56,21 @@ class Span
                 virtual const	char* what() const throw()	{
                     return ("Span: Size is too small");
                 }
+        };
+
+        /* add range */
+        template< class Iter >
+        void	addRange(
+            Iter start,
+            Iter end )
+        {
+
+            unsigned int distance = static_cast<unsigned int>(std::distance(start, end));
+            if (distance > this->_space )
+                throw ( fullException() );
+            this->_space -= distance;
+            std::copy( start, end, this->_tab.begin() );
+            return ;
         };
 };
 

@@ -1,4 +1,4 @@
-SRCS	=	main.cpp \
+SRCS	=	main2.cpp \
 
 OBJS	=	${SRCS:%.cpp=./.build/%.o}
 

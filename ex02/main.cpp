@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/31 11:48:12 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/31 16:24:19 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:35:01 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,13 +16,17 @@
 
 int main( void ) {
 
-    MutantStack<int> mstack;
+    MutantStack<int> mstacks;
 
-    mstack.push(2);
-    mstack.push(17);
-    mstack.push(12);
-    mstack.push(1);
-    mstack.push(9);
+    mstacks.push(2);
+    mstacks.push(17);
+    mstacks.push(12);
+    mstacks.push(1);
+    mstacks.push(9);
+    MutantStack<int> mstackx( mstacks );
+    MutantStack<int> mstack;
+    mstack = mstackx;
+
     std::cout << mstack.top() << std::endl;
     std::cout << mstack.size() << std::endl;
 
@@ -116,5 +120,11 @@ int main( void ) {
     std::cout << *++mvie << std::endl;
     std::cout << *++mvie << std::endl;
     std::cout << *++mvie << std::endl;
+
+    std::cout << "<-----------{traits}----------->" << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::pointer ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::difference_type ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::value_type ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::iterator_category ) << std::endl;
     return (0);
 }

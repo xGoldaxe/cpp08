@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:27:43 by pleveque          #+#    #+#             */
-/*   Updated: 2022/03/31 11:46:34 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/04/26 20:21:35 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,12 +46,8 @@ Span &	Span::operator=( Span const & rhs )	{
     if ( this != &rhs ) {
 
         this->_n = rhs.getN();
-        //space set to max because add range will decrease it
-        this->_space = rhs.getN();
-        this->_tab = std::vector<int>(rhs.getN());
-        std::vector<int>::const_iterator start = rhs.getTab().begin();
-        std::vector<int>::const_iterator end = rhs.getTab().end();
-        this->addRange( start, end );
+        this->_space = rhs.getSpace();
+        this->_tab = rhs.getTab();
     }
 
     return (*this);
@@ -123,17 +119,4 @@ unsigned int	Span::longestSpan( void )	{
     int max = *std::max_element( this->_tab.begin(), this->_tab.end() );
 
     return getDiff(min, max);
-}
-
-void	Span::addRange(
-    std::vector<int>::const_iterator start,
-    std::vector<int>::const_iterator end )
-{
-
-    unsigned int distance = static_cast<unsigned int>(std::distance(start, end));
-    if (distance > this->_space )
-        throw ( Span::fullException() );
-    this->_space -= distance;
-    std::copy( start, end, this->_tab.begin() );
-    return ;
 }
