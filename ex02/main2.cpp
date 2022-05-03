@@ -3,16 +3,20 @@
 
 int main()
 {
-	MutantStack<int> mstack;
-	mstack.push(5);
-	mstack.push(17);
-	std::cout << mstack.top() << std::endl;
+	MutantStack<int> st;
+	st.push(5);
+	st.push(17);
+	// std::cout << st.top() << std::endl;
 	// mstack.pop();
-	std::cout << mstack.size() << std::endl;
-	mstack.push(3);
-	mstack.push(5);
-	mstack.push(737);
-	mstack.push(0);
+	std::cout << st.size() << std::endl;
+	std::cout << "<-----------{ iterate }----------->" << std::endl;
+	st.push(3);
+	st.push(5);
+	st.push(737);
+	st.push(0);
+	MutantStack<int> ms(st);
+	MutantStack<int> mstack;
+	mstack = ms;
 	MutantStack<int>::iterator it = mstack.begin();
 	MutantStack<int>::iterator ite = mstack.end();
 	++it;
@@ -24,6 +28,7 @@ int main()
 	}
 	it--;
 	MutantStack<int>::iterator itr;
+	std::cout << "<-----------{ reverse iterate }----------->" << std::endl;
 	itr = mstack.begin();
 	while (it != itr)
 	{
@@ -31,6 +36,18 @@ int main()
 		--it;
 	}
 	std::cout << *it << std::endl;
-	std::stack<int> s(mstack);
+	std::cout << "<-----------{ reverse iterator }----------->" << std::endl;
+	MutantStack<int>::reverse_iterator itre = mstack.rbegin();
+	while (itre != mstack.rend())
+	{
+		std::cout << *itre << std::endl;
+		++itre;
+	}
+	std::cout << "<-----------{traits}----------->" << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::pointer ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::difference_type ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::value_type ) << std::endl;
+    std::cout << sizeof( std::iterator_traits<MutantStack<std::string>::iterator >::iterator_category ) << std::endl;
+
 	return 0;
 }

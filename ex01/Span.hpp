@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 14:52:15 by pleveque          #+#    #+#             */
-/*   Updated: 2022/04/26 20:22:10 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/05/03 10:49:08 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,13 +21,13 @@ class Span
 {
 
     private:
-        unsigned int    _n;
-        unsigned int    _space;
-        std::vector<int>  _tab;
+        unsigned int        _n;
+        unsigned int        _space;
+        std::vector<int>    _tab;
 
     protected:
-        unsigned int	getN( void ) const;
-        unsigned int	getSpace( void ) const;
+        unsigned int	            getN( void ) const;
+        unsigned int	            getSpace( void ) const;
         const std::vector<int> &	getTab( void ) const;
 
     public:
@@ -39,9 +39,9 @@ class Span
 
         Span &   operator=( Span const & rhs );
         /* end coplien */
-        void	addNumber( int value );
+        void	        addNumber( int value );
         unsigned int    shortestSpan( void );
-        unsigned int    longestSpan( void );
+        unsigned int    longestSpan( void ) const;
         
         /* exceptions */
         class fullException : public std::exception	{
@@ -66,10 +66,10 @@ class Span
         {
 
             unsigned int distance = static_cast<unsigned int>(std::distance(start, end));
-            if (distance > this->_space )
+            if ( distance > this->_space )
                 throw ( fullException() );
             this->_space -= distance;
-            std::copy( start, end, this->_tab.begin() );
+            std::copy( start, end, this->_tab.rbegin() );
             return ;
         };
 };

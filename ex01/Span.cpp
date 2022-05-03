@@ -6,7 +6,7 @@
 /*   By: pleveque <pleveque@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/03/30 15:27:43 by pleveque          #+#    #+#             */
-/*   Updated: 2022/04/26 20:21:35 by pleveque         ###   ########.fr       */
+/*   Updated: 2022/05/03 10:48:42 by pleveque         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,6 +100,7 @@ unsigned int	Span::shortestSpan( void )	{
     if ( (this->_n - this->_space) < 2 )
         throw ( Span::tooSmallException() );
 
+    std::sort( this->_tab.begin(), this->_tab.end() );
     unsigned int diff = std::numeric_limits<unsigned long>::max();
     for (unsigned int i = 0; i < (this->_n - this->_space)- 1; i++)
     {
@@ -110,7 +111,7 @@ unsigned int	Span::shortestSpan( void )	{
     return ( diff );
 }
 
-unsigned int	Span::longestSpan( void )	{
+unsigned int	Span::longestSpan( void ) const	{
 
     if ( (this->_n - this->_space) < 2 )
         throw ( Span::tooSmallException() );
